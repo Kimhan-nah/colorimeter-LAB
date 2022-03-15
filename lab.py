@@ -20,7 +20,7 @@ def onMouse(event, x, y, flags, param):
             img_draw = img.copy()
             cv.rectangle(img_draw, (x0, y0), (x, y), red, 2)
             cv.imshow('draw img', img_draw)
-            cv.moveWindow('draw img', 200, 200)
+            cv.moveWindow('draw img', 150, 0)
     elif event == cv.EVENT_LBUTTONUP:   # 왼쪽 마우스 업
         if isDragging:                  # 드래그 중지
             isDragging = False
@@ -32,28 +32,38 @@ def onMouse(event, x, y, flags, param):
                 # cv.imshow('img', img_draw)      # 빨간 사각형 그려진 이미지 화면 출력
                 roi = img[y0:y0+h, x0:x0+w]     # 원본 이미지에서 선택 영여만 ROI 지정
                 cv.imshow('cropped', roi)
-                cv.moveWindow('cropped', 200, 200)
+                cv.moveWindow('cropped', 150, 0)
                 # cv.imwrite('./cropped.png', roi)  # 파일 저장
-                print("croped.")
+                print("croped!")
                 cv.destroyWindow("img title")   # 첫 생성 윈도우 창 닫기
                 cv.destroyWindow("draw img")
+                labColor(roi)                   # 평균 색상 추출 함수 호출
             else:
                 cv.imshow('img', img)
                 print('drag should start from left-top side')
  
+# 이미지 색상 추출 함수
+def labColor(src):
+    dst = cv.cvtColor(src, cv.COLOR_BGR2Lab)        # BGR -> L*a*b 
+    # [L', a', b'] = [255, 255, 255]
+    # L' = L * 255 / 100  |  a' = a + 128  | b' = b + 128
+    # L = L' * 100 / 255  |  a = a' - 128  | b = b' - 128
+    print("=====L*a*b=======")
+    print(dst[0][0])
+    print("[", dst[0][0][0] * 100 / 255, dst[0][0][1] - 128, dst[0][0][2] - 128, "]")
+
 
 # 이미지 읽기
-img = cv.imread("./img/kitech.jpeg")
+img = cv.imread("./img/0um.jpg")
 
 # 이미지 크기 조절 (비율)
 # img_resize = cv.resize(img, dsize=(0,0), fx=10, fy=10, interpolation=cv.INTER_LINEAR)
 
-
 # 해당 이미지 출력
 cv.imshow("img title", img)
 # 윈도우 창 위치 이동
-cv.moveWindow("img title", 200, 200)
-print("connected")
+cv.moveWindow("img title", 150, 0)
+print("===connected===")
 # 마우스 이벤트 등록
 cv.setMouseCallback("img title", onMouse)
 
@@ -61,4 +71,4 @@ cv.setMouseCallback("img title", onMouse)
 cv.waitKey()
 cv.destroyAllWindows()
 
-print("Bye")
+print("===Bye===")
