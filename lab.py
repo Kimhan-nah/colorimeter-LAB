@@ -18,7 +18,8 @@ def onMouse(event, x, y, flags, param):
     elif event == cv.EVENT_MOUSEMOVE:   # 마우스 움직임
         if isDragging:                  # 드래그 진행
             img_draw = img.copy()
-            cv.rectangle(img_draw, (x0, y0), (x, y), red, 2)
+            # cv.rectangle(img_draw, (x0, y0), (x, y), red, 2)
+            cv.circle(img_draw, (x0, y0), (x, y), red, 2)
             cv.imshow('draw img', img_draw)
             cv.moveWindow('draw img', 150, 0)
     elif event == cv.EVENT_LBUTTONUP:   # 왼쪽 마우스 업
